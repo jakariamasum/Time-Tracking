@@ -32,7 +32,7 @@ const Navbar = () => {
                         <span className="ml-1">Login</span>
                     </Link>
 
-                    <Link to="#" className="text-white hover:text-gray-300">
+                    <Link to="/register" className="text-white hover:text-gray-300">
                         <FaUserPlus />
                         <span className="ml-1">Signup</span>
                     </Link>
@@ -55,7 +55,7 @@ const Navbar = () => {
                     <Link to="/login" className="block text-white py-2" onClick={closeMenu}>
                         Login
                     </Link>
-                    <Link to="#" className="block text-white py-2" onClick={closeMenu}>
+                    <Link to="/register" className="block text-white py-2" onClick={closeMenu}>
                         Signup
                     </Link>
                 </div>
