@@ -1,13 +1,45 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import login from '../../assets/login.jpg';
 import { useForm } from 'react-hook-form';
 import SocialLinks from '../../components/SocialLinks/SocialLinks';
+import { AuthContext } from '../../Provider/Authprovider';
+import { useContext, useState } from 'react';
 
 const Login = () => {
     const { handleSubmit, formState: { errors }, register } = useForm();
 
+
+    const navigate = useNavigate();
+    const [error, setError] = useState('');
+    const {  signIn } = useContext(AuthContext);
+    // const [password, setPassword] = useState('');
+    const location = useLocation()
+    const from = location.state?.from?.pathname || '/'
+
+    
     const onSubmit = (data) => {
         console.log(data);
+        const email= data.email;
+        const password= data.password;
+        signIn(email, password)
+            .then(res => {
+                setError('')
+                console.log(res.user)
+                Swal.fire({
+                    position: 'text-center',
+                    icon: 'success',
+                    title: 'Login Successful',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                navigate(from, { replace: true });
+            })
+            .catch(error => {
+                console.log(error.message)
+                setError('Invalid password or email')
+            });
+        
     };
 
     return (
@@ -75,7 +107,7 @@ const Login = () => {
                             className='bg-[#FF7425] px-4 md:px-8 rounded-lg text-white cursor-pointer py-3 md:py-4'
                         />
                     </div>
-                    <SocialLinks/>
+                    <SocialLinks />
                 </form>
             </div>
         </div>
