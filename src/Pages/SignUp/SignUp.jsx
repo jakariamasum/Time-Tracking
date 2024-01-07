@@ -1,7 +1,10 @@
 import img1 from '../../assets/register.jpg';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import SocialLinks from '../../components/SocialLinks/SocialLinks';
+import { useContext, useState } from 'react';
+import { AuthContext } from '../../Provider/Authprovider';
+import Swal from 'sweetalert2';
 
 const Register = () => {
     const {
@@ -11,9 +14,38 @@ const Register = () => {
         formState: { errors },
     } = useForm();
 
+    // const [err, setErr] = useState('');
+    const navigate = useNavigate();
+    const { createUser, logOut } = useContext(AuthContext);
+    // const [showPassword, setShowPassword] = useState(false);
+
     const onSubmit = (data) => {
-        console.log(data); 
-    };
+        const name = data.name;
+        const email = data.email;
+        const password = data.password;
+        createUser(email, password)
+            .then(res => {
+                Swal.fire({
+                    position: 'text-center',
+                    icon: 'success',
+                    title: 'Registration Successful! Please login',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+                .then(() => {
+                    logOut()
+                    navigate('/login')
+                }).catch((error) => {
+                    console.log(error.message)
+                });
+
+            })
+            .catch(error => console.log(error.message))
+    }
+
+    // const onSubmit = (data) => {
+    //     console.log(data);
+    // };
     const password = watch('password');
 
     return (
@@ -88,7 +120,7 @@ const Register = () => {
                     </div>
                     <div className='flex flex-col gap-1'>
                         <label className='text-xl text-[#232323] font-semibold'>
-                           Confirm Password
+                            Confirm Password
                         </label>
                         <input
                             type='password'
@@ -107,9 +139,9 @@ const Register = () => {
                             className='py-3 md:py-4 px-2 mx-auto md:ml-0 md:w-1/2 rounded-sm border border-black'
                         />
                         <p style={{ color: 'red' }}>{errors.confirmPassword?.message}</p>
-                    {!errors.confirmPassword && password && password !== watch('confirmPassword') && (
-                        <p style={{ color: 'red' }}>Passwords do not match</p>
-                    )}
+                        {!errors.confirmPassword && password && password !== watch('confirmPassword') && (
+                            <p style={{ color: 'red' }}>Passwords do not match</p>
+                        )}
                     </div>
 
                     <div className='my-4'>
