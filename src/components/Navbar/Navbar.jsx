@@ -27,7 +27,7 @@ const Navbar = () => {
                         <span className="ml-1">Features</span>
                     </Link>
 
-                    <Link to="#" className="text-white hover:text-gray-300">
+                    <Link to="/login" className="text-white hover:text-gray-300">
                         <FaSignInAlt />
                         <span className="ml-1">Login</span>
                     </Link>
@@ -52,7 +52,7 @@ const Navbar = () => {
                     <Link to="#" className="block text-white py-2" onClick={closeMenu}>
                         Features
                     </Link>
-                    <Link to="#" className="block text-white py-2" onClick={closeMenu}>
+                    <Link to="/login" className="block text-white py-2" onClick={closeMenu}>
                         Login
                     </Link>
                     <Link to="#" className="block text-white py-2" onClick={closeMenu}>
