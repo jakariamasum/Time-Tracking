@@ -1,9 +1,10 @@
-import React, { useState, useRef, useEffect } from 'react';
+import  { useState, useRef, useEffect } from 'react';
 import TimerDisplay from './TimerDisplay';
 
 const TimeTracking = () => {
   const [timer, setTimer] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
   const [activities, setActivities] = useState([]);
   const [currentProject, setCurrentProject] = useState(null);
   const projectNameRef = useRef(null);
@@ -22,7 +23,7 @@ const TimeTracking = () => {
   useEffect(() => {
     let intervalId;
 
-    if (isRunning) {
+    if (isRunning && !isPaused) {
       const startTime = currentProject ? Date.now() - timer : Date.now();
 
       intervalId = setInterval(() => {
@@ -33,7 +34,7 @@ const TimeTracking = () => {
     return () => {
       clearInterval(intervalId);
     };
-  }, [isRunning, currentProject, timer]);
+  }, [isRunning, isPaused, currentProject, timer]);
 
   const startTimer = () => {
     if (!isRunning) {
@@ -51,6 +52,7 @@ const TimeTracking = () => {
   const stopTimer = () => {
     if (isRunning) {
       setIsRunning(false);
+      setIsPaused(false);
       setTimer(0);
       const endTime = new Date();
 
@@ -68,19 +70,14 @@ const TimeTracking = () => {
   };
 
   const resumeTimer = () => {
-    if (!isRunning && currentProject) {
-      setIsRunning(true);
-      const elapsedMilliseconds = new Date() - currentProject.startTime;
+    if (isPaused && currentProject) {
+      setIsPaused(false);
+    }
+  };
 
-      const startTime = Date.now() - elapsedMilliseconds;
-
-      const intervalId = setInterval(() => {
-        setTimer(Date.now() - startTime);
-      }, 1000);
-
-      return () => {
-        clearInterval(intervalId);
-      };
+  const pauseTimer = () => {
+    if (isRunning && !isPaused) {
+      setIsPaused(true);
     }
   };
 
@@ -135,6 +132,53 @@ const TimeTracking = () => {
     return `${hours}h ${minutes}m ${seconds}s`;
   };
 
+  const getActionButton = () => {
+    if (isRunning && isPaused) {
+      return (
+        <>
+          <button
+            onClick={resumeTimer}
+            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2"
+          >
+            Resume
+          </button>
+          <button
+            onClick={stopTimer}
+            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+          >
+            Stop
+          </button>
+        </>
+      );
+    } else if (isRunning && !isPaused) {
+      return (
+        <>
+          <button
+            onClick={pauseTimer}
+            className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded mr-2"
+          >
+            Pause
+          </button>
+          <button
+            onClick={stopTimer}
+            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+          >
+            Stop
+          </button>
+        </>
+      );
+    } else {
+      return (
+        <button
+          onClick={startTimer}
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
+        >
+          Start
+        </button>
+      );
+    }
+  };
+
   return (
     <div className="container mx-auto p-4">
       <div className="mb-4">
@@ -151,24 +195,7 @@ const TimeTracking = () => {
       </div>
 
       <div className="mb-4">
-        <button
-          onClick={startTimer}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
-        >
-          Start
-        </button>
-        <button
-          onClick={resumeTimer}
-          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2"
-        >
-          Resume
-        </button>
-        <button
-          onClick={stopTimer}
-          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-        >
-          Stop
-        </button>
+        {getActionButton()}
       </div>
 
       <div className="mb-4">
