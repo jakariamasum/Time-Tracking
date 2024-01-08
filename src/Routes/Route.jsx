@@ -6,6 +6,7 @@ import Login from "../Pages/Login/Login";
 import SignUp from "../Pages/SignUp/SignUp";
 import Dashboard from "../Layout/Dashboard/Dashboard";
 import TimeTracking from "../Pages/TimeTracking/TimeTracking";
+import DashboardPage from "../Pages/DashboardPage/DashboardPage";
 
 export const router = createBrowserRouter([
     {
@@ -29,6 +30,10 @@ export const router = createBrowserRouter([
             {
                 path:'/dashboard/time-tracking',
                 element: <TimeTracking/>
+            },
+            {
+                path: '/dashboard/dashboard',
+                element: <DashboardPage/>
             }
         ]
     }

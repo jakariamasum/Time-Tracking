@@ -41,14 +41,18 @@ const TimeTracking = () => {
         if (isRunning) {
             setIsRunning(false);
             setTimer(0);
-            setActivities((prevActivities) => [
-                ...prevActivities,
-                {
-                    projectName: currentProject.projectName,
-                    startTime: currentProject.startTime,
-                    endTime: new Date(),
-                },
-            ]);
+            const endTime = new Date();
+
+            const newActivity = {
+                projectName: currentProject.projectName,
+                startTime: currentProject.startTime,
+                endTime,
+            };
+
+            // Save the activity to local storage
+            saveActivity(newActivity);
+
+            setActivities((prevActivities) => [...prevActivities, newActivity]);
             setCurrentProject(null);
         }
     };
@@ -69,6 +73,12 @@ const TimeTracking = () => {
           };
         }
       };
+
+      const saveActivity = (activity) => {
+        const storedActivities = JSON.parse(localStorage.getItem('activities')) || [];
+        storedActivities.push(activity);
+        localStorage.setItem('activities', JSON.stringify(storedActivities));
+    };
       
 
     return (
