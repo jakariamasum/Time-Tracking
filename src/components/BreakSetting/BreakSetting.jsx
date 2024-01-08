@@ -14,7 +14,7 @@ const BreakSettings = ({ breakReminders, toggleBreakReminders }) => {
           timer: 5000,
           showConfirmButton: false,
         });
-      }, 30000);
+      }, 1800000);
 
       setReminderInterval(intervalId);
     } else {
