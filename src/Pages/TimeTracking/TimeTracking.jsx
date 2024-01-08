@@ -1,10 +1,12 @@
-import  { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import TimerDisplay from './TimerDisplay';
 
 const TimeTracking = () => {
   const [timer, setTimer] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
+  const [isBreak, setIsBreak] = useState(false);
+  const [breakModal, setBreakModal] = useState(false);
   const [activities, setActivities] = useState([]);
   const [currentProject, setCurrentProject] = useState(null);
   const projectNameRef = useRef(null);
@@ -23,8 +25,8 @@ const TimeTracking = () => {
   useEffect(() => {
     let intervalId;
 
-    if (isRunning && !isPaused) {
-      const startTime = currentProject ? Date.now() - timer : Date.now();
+    if ((isRunning && !isPaused) || (isBreak && !isPaused)) {
+      const startTime = (currentProject || isBreak) ? Date.now() - timer : Date.now();
 
       intervalId = setInterval(() => {
         setTimer(Date.now() - startTime);
@@ -34,10 +36,10 @@ const TimeTracking = () => {
     return () => {
       clearInterval(intervalId);
     };
-  }, [isRunning, isPaused, currentProject, timer]);
+  }, [isRunning, isPaused, currentProject, timer, isBreak]);
 
   const startTimer = () => {
-    if (!isRunning) {
+    if (!isRunning && !isBreak) {
       setIsRunning(true);
       setTimer(0);
       const startTime = new Date();
@@ -46,40 +48,63 @@ const TimeTracking = () => {
         projectName: projectNameRef.current.value,
         startTime,
       });
+    } else if (!isRunning && isBreak) {
+      setIsBreak(false);
+      setIsRunning(true);
+      setTimer(0);
     }
   };
 
   const stopTimer = () => {
-    if (isRunning) {
+    if (isRunning || isBreak) {
       setIsRunning(false);
+      setIsBreak(false);
       setIsPaused(false);
       setTimer(0);
       const endTime = new Date();
 
-      const newActivity = {
-        projectName: currentProject.projectName,
-        startTime: currentProject.startTime,
-        endTime,
-      };
+      if (!isBreak) {
+        const newActivity = {
+          projectName: currentProject.projectName,
+          startTime: currentProject.startTime,
+          endTime,
+        };
 
-      saveActivity(newActivity);
+        saveActivity(newActivity);
 
-      setActivities((prevActivities) => [...prevActivities, newActivity]);
-      setCurrentProject(null);
-    }
-  };
-
-  const resumeTimer = () => {
-    if (isPaused && currentProject) {
-      setIsPaused(false);
+        setActivities((prevActivities) => [...prevActivities, newActivity]);
+        setCurrentProject(null);
+      }
     }
   };
 
   const pauseTimer = () => {
-    if (isRunning && !isPaused) {
+    if ((isRunning && !isBreak) || (isBreak && !isPaused)) {
       setIsPaused(true);
     }
   };
+
+  const resumeTimer = () => {
+    if ((isPaused && isRunning) || (isPaused && isBreak)) {
+      setIsPaused(false);
+    }
+  };
+
+  const startBreak = () => {
+    if (!isRunning && !isBreak) {
+      setIsBreak(true);
+      setIsPaused(false);
+      setTimer(0);
+      setBreakModal(true);
+
+      setTimeout(() => {
+        setBreakModal(false);
+        setIsBreak(0);
+        setTimer(0)
+      }, 30000);
+    }
+  };
+
 
   const saveActivity = (activity) => {
     const storedActivities = JSON.parse(localStorage.getItem('activities')) || [];
@@ -133,7 +158,7 @@ const TimeTracking = () => {
   };
 
   const getActionButton = () => {
-    if (isRunning && isPaused) {
+    if ((isRunning && isPaused) || (isBreak && isPaused)) {
       return (
         <>
           <button
@@ -150,7 +175,7 @@ const TimeTracking = () => {
           </button>
         </>
       );
-    } else if (isRunning && !isPaused) {
+    } else if ((isRunning && !isPaused) || (isBreak && !isPaused)) {
       return (
         <>
           <button
@@ -169,12 +194,20 @@ const TimeTracking = () => {
       );
     } else {
       return (
-        <button
-          onClick={startTimer}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
-        >
-          Start
-        </button>
+        <>
+          <button
+            onClick={startTimer}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
+          >
+            Start
+          </button>
+          <button
+            onClick={startBreak}
+            className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded mr-2"
+          >
+            Start Break
+          </button>
+        </>
       );
     }
   };
@@ -329,6 +362,41 @@ const TimeTracking = () => {
                 >
                   Cancel
                 </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {breakModal && (
+        <div
+          className="fixed z-10 inset-0 overflow-y-auto"
+          aria-labelledby="modal-title"
+          role="dialog"
+          aria-modal="true"
+        >
+          <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div className="fixed inset-0 transition-opacity">
+              <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+            </div>
+
+            <span className="hidden sm:inline-block sm:align-middle sm:h-screen"></span>•
+
+            <div
+              className="inline-block align-bottom bg-white rounded-lg text-center overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
+              role="dialog"
+              aria-labelledby="modal-headline"
+            >
+              <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <h3 className="text-xl leading-6 font-medium text-gray-900 mb-4">
+                  Take a 30sec Break!
+                </h3>
+                <p className="text-gray-700 text-sm mb-4">
+                  Relax and come back recharged for your next session.
+                </p>
+                <div className="text-3xl font-bold mb-4">
+                  <TimerDisplay timer={timer} />
+                </div>
               </div>
             </div>
           </div>
