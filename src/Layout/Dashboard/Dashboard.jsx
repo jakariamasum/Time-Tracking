@@ -27,9 +27,9 @@ const Dashboard = () => {
             </Link>
           </li>
           <li className="mb-2">
-            <Link to="/dashboard/user-feedback" className="flex items-center">
+            <Link to="/dashboard/project" className="flex items-center">
               <FaComments className="mr-2" />
-              User Feedback
+              Project Management
             </Link>
           </li>
         </ul>
