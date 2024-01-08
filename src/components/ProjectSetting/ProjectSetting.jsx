@@ -10,29 +10,21 @@ const ProjectSettings = ({ defaultProject, setDefaultProject }) => {
   useEffect(() => {
     if (isDefaultChecked) {
       setDefaultProject('Ninja project');
-
     } else {
       setDefaultProject('');
     }
   }, [isDefaultChecked, setDefaultProject]);
 
   return (
-    <div>
-      <label>
-        <input
-          type="text"
-          className='bg-gray-200 text-center'
-          value={defaultProject}
-          onChange={(e) => setDefaultProject(e.target.value)}
-        />
-      </label>
-      <label>
+    <div className="flex flex-col items-center sm:flex-row sm:justify-between">
+      <label className="flex items-center">
         <input
           type="checkbox"
           checked={isDefaultChecked}
           onChange={handleCheckboxChange}
+          className="mr-2"
         />
-        Set as Ninja project
+        <span className="text-sm">Set as Ninja project</span>
       </label>
     </div>
   );

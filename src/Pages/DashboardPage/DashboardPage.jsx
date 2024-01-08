@@ -44,45 +44,50 @@ const DashboardPage = () => {
     }));
 
     return (
-        <div className="container mx-auto mt-8 flex">
-            <div className="flex-1 mt-8 mr-4">
-                <h2 className="text-2xl font-bold mb-4">Cumulative Total Time by Day</h2>
-                <p className="text-xl mb-4">Overall Total Time: {overallTotalTime} hours</p>
-                <BarChart
-                    width={200}
-                    height={300}
-                    data={chartData}
-                    margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-                >
-                    <XAxis dataKey="date" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Bar dataKey="totalHours" fill="#82ca9d" animationDuration={1000} />
-                </BarChart>
-            </div>
-            <div className="flex-1 mt-8">
-                <h2 className="text-2xl font-bold mb-4">Total Time Distribution (Pie Chart)</h2>
-                <PieChart width={400} height={300}>
-                    <Tooltip formatter={(value) => `${value}%`} />
-                    <Legend />
-                    <Pie
-                        data={pieChartData}
-                        dataKey="value"
-                        nameKey="name"
-                        cx="50%"
-                        cy="50%"
-                        outerRadius={100}
-                        fill="#8884d8"
-                        label
-                    >
-                        {pieChartData.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={entry.color} />
-                        ))}
-                    </Pie>
-                </PieChart>
-            </div>
-        </div>
+        <div className="container mx-auto mt-8 flex flex-col md:flex-row">
+  <div className="flex-1 mt-8 md:mr-4">
+    <h2 className="text-2xl font-bold mb-4">Cumulative Total Time by Day</h2>
+    <p className="text-xl mb-4">Overall Total Time: {overallTotalTime} hours</p>
+    <div className="w-full md:w-2/3 lg:w-1/2 xl:w-1/3">
+      <BarChart
+        width={200}
+        height={300}
+        data={chartData}
+        margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+      >
+        <XAxis dataKey="date" />
+        <YAxis />
+        <Tooltip />
+        <Legend />
+        <Bar dataKey="totalHours" fill="#82ca9d" animationDuration={1000} />
+      </BarChart>
+    </div>
+  </div>
+  <div className="flex-1 mt-8">
+    <h2 className="text-2xl font-bold mb-4">Total Time Distribution (Pie Chart)</h2>
+    <div className=" md:w-2/3 lg:w-1/2 xl:w-1/3">
+      <PieChart width={200} height={300}>
+        <Tooltip formatter={(value) => `${value}%`} />
+        <Legend />
+        <Pie
+          data={pieChartData}
+          dataKey="value"
+          nameKey="name"
+          cx="50%"
+          cy="50%"
+          outerRadius={100}
+          fill="#8884d8"
+          label
+        >
+          {pieChartData.map((entry, index) => (
+            <Cell key={`cell-${index}`} fill={entry.color} />
+          ))}
+        </Pie>
+      </PieChart>
+    </div>
+  </div>
+</div>
+
     );
 };
 

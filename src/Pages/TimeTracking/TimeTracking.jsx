@@ -236,107 +236,103 @@ const TimeTracking = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2">
-          Project Name
-        </label>
-        <input
-          ref={projectNameRef}
-          type="text"
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          placeholder="Enter project name"
-          required
-        />
-      </div>
+  <div className="mb-4">
+    <label className="block text-gray-700 text-sm font-bold mb-2">
+      Project Name
+    </label>
+    <input
+      ref={projectNameRef}
+      type="text"
+      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      placeholder="Enter project name"
+      required
+    />
+  </div>
 
-
-      <div className="flex gap-6">
-        <div className="mb-4">
-          <button
-            onClick={openManualEntryModal}
-            className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-1 px-4 rounded"
-          >
-            Manual Entry
-          </button>
-        </div>
-
-        <div className="mb-4">
-          <ProjectSettings
-            defaultProject={defaultProject}
-            setDefaultProject={setDefaultProject}
-          />
-        </div>
-
-        <div className="mb-4">
-          <BreakSettings
-            breakReminders={breakReminders}
-            toggleBreakReminders={toggleBreakReminders}
-          />
-        </div>
-      </div>
-
-
-
-
-
-
-      <div className="mb-4">
-        {getActionButton()}
-      </div>
-
-
-
-      <div className="mb-4 font-bold text-3xl">
-        <TimerDisplay timer={timer} />
-      </div>
-
-      {activities.length > 0 && (
-        <div>
-          <h2 className="text-xl font-bold mb-2">Activity Log</h2>
-          <table className="min-w-full border border-gray-500">
-            <thead>
-              <tr>
-                <th className="border px-4 py-2">Project</th>
-                <th className="border px-4 py-2">Start Time</th>
-                <th className="border px-4 py-2">End Time</th>
-                <th className="border px-4 py-2">Duration</th>
-              </tr>
-            </thead>
-            <tbody>
-              {activities.map((activity, index) => (
-                <tr key={index}>
-                  <td className="border px-4 py-2">{activity.projectName}</td>
-                  <td className="border px-4 py-2">
-                    {new Date(activity.startTime).toLocaleTimeString()}
-                  </td>
-                  <td className="border px-4 py-2">
-                    {new Date(activity.endTime).toLocaleTimeString()}
-                  </td>
-                  <td className="border px-4 py-2">
-                    {formatTime(
-                      Math.floor((new Date(activity.endTime) - new Date(activity.startTime)) / 1000)
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
-
-      {manualEntryModal && (
-        <ManualEntryModal
-          modalData={manualEntryData}
-          handleChange={handleManualEntryChange}
-          handleSubmit={submitManualEntry}
-          closeModal={closeManualEntryModal}
-        />
-      )}
-
-      {breakModal && (
-        <BreakModal timer={timer} />
-      )}
+  <div className="flex gap-3 md:gap-6 mb-4">
+    <div className="mb-4">
+      <button
+        onClick={openManualEntryModal}
+        className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-1 px-4 rounded"
+      >
+        Manual Entry
+      </button>
     </div>
+
+    <div className="mb-4">
+      <ProjectSettings
+        defaultProject={defaultProject}
+        setDefaultProject={setDefaultProject}
+      />
+    </div>
+
+    <div className="mb-4">
+      <BreakSettings
+        breakReminders={breakReminders}
+        toggleBreakReminders={toggleBreakReminders}
+      />
+    </div>
+  </div>
+
+  <div className="mb-4">
+    {getActionButton()}
+  </div>
+
+  <div className="mb-4 font-bold text-3xl">
+    <TimerDisplay timer={timer} />
+  </div>
+
+  {activities.length > 0 && (
+    <div>
+    <h2 className="text-xl font-bold mb-2">Activity Log</h2>
+    <div className="overflow-x-auto">
+      <table className="min-w-full border border-gray-500">
+        <thead>
+          <tr>
+            <th className="border px-4 py-2">Project</th>
+            <th className="border px-4 py-2">Start Time</th>
+            <th className="border px-4 py-2">End Time</th>
+            <th className="border px-4 py-2">Duration</th>
+          </tr>
+        </thead>
+        <tbody>
+          {activities.map((activity, index) => (
+            <tr key={index}>
+              <td className="border px-4 py-2">{activity.projectName}</td>
+              <td className="border px-4 py-2">
+                {new Date(activity.startTime).toLocaleTimeString()}
+              </td>
+              <td className="border px-4 py-2">
+                {new Date(activity.endTime).toLocaleTimeString()}
+              </td>
+              <td className="border px-4 py-2">
+                {formatTime(
+                  Math.floor((new Date(activity.endTime) - new Date(activity.startTime)) / 1000)
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+  )}
+
+  {manualEntryModal && (
+    <ManualEntryModal
+      modalData={manualEntryData}
+      handleChange={handleManualEntryChange}
+      handleSubmit={submitManualEntry}
+      closeModal={closeManualEntryModal}
+    />
+  )}
+
+  {breakModal && (
+    <BreakModal timer={timer} />
+  )}
+</div>
+
   );
 };
 
