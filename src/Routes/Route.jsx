@@ -4,6 +4,8 @@ import {
 import Home from "../Layout/Home";
 import Login from "../Pages/Login/Login";
 import SignUp from "../Pages/SignUp/SignUp";
+import Dashboard from "../Layout/Dashboard/Dashboard";
+import TimeTracking from "../Pages/TimeTracking/TimeTracking";
 
 export const router = createBrowserRouter([
     {
@@ -20,4 +22,14 @@ export const router = createBrowserRouter([
             }
         ]
     },
+    {
+        path: '/dashboard',
+        element: <Dashboard/>,
+        children:[
+            {
+                path:'/dashboard/time-tracking',
+                element: <TimeTracking/>
+            }
+        ]
+    }
 ]);

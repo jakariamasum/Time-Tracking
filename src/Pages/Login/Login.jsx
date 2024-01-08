@@ -33,7 +33,7 @@ const Login = () => {
                     showConfirmButton: false,
                     timer: 1500
                 });
-                navigate(from, { replace: true });
+                navigate('/dashboard');
             })
             .catch(error => {
                 console.log(error.message)
