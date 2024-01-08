@@ -8,6 +8,7 @@ import Dashboard from "../Layout/Dashboard/Dashboard";
 import TimeTracking from "../Pages/TimeTracking/TimeTracking";
 import DashboardPage from "../Pages/DashboardPage/DashboardPage";
 import Project from "../Pages/Projects/Projects";
+import { ProjectProvider } from "../Pages/Projects/ProjectContext";
 
 export const router = createBrowserRouter([
     {
@@ -38,7 +39,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: '/dashboard/project',
-                element: <Project/>
+                element: <ProjectProvider><Project/></ProjectProvider>
             }
         ]
     }
