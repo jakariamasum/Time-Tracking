@@ -1,5 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import TimerDisplay from './TimerDisplay';
+import ManualEntryModal from '../../components/ManualEntry/ManualEntry';
+import BreakModal from '../../components/BreakModal/BreakModal';
+import BreakSettings from '../../components/BreakSetting/BreakSetting';
+import ProjectSettings from '../../components/ProjectSetting/ProjectSetting';
+import TimerSettings from '../../components/TimerSetting/TimerSetting';
 
 const TimeTracking = () => {
   const [timer, setTimer] = useState(0);
@@ -45,7 +50,7 @@ const TimeTracking = () => {
       const startTime = new Date();
 
       setCurrentProject({
-        projectName: projectNameRef.current.value,
+        projectName: defaultProject ? defaultProject : projectNameRef.current.value,
         startTime,
       });
     } else if (!isRunning && isBreak) {
@@ -119,7 +124,7 @@ const TimeTracking = () => {
   const closeManualEntryModal = () => {
     setManualEntryModal(false);
     setManualEntryData({
-      name: '',
+      name: defaultProject ? defaultProject : '',
       startTime: '',
       endTime: '',
     });
@@ -128,7 +133,7 @@ const TimeTracking = () => {
   const handleManualEntryChange = (e) => {
     setManualEntryData({
       ...manualEntryData,
-      [e.target.name]: e.target.value,
+      [e.target.name]: defaultProject ? defaultProject : e.target.value,
     });
   };
 
@@ -148,6 +153,23 @@ const TimeTracking = () => {
       closeManualEntryModal();
     }
   };
+
+
+  const [manualTracking, setManualTracking] = useState(false);
+  const [defaultProject, setDefaultProject] = useState('');
+  const [breakReminders, setBreakReminders] = useState(false);
+
+  const toggleManualTracking = () => {
+    setManualTracking((prev) => !prev);
+  };
+
+  const toggleBreakReminders = () => {
+    setBreakReminders((prev) => !prev);
+  };
+
+
+
+
 
   const formatTime = (duration) => {
     const hours = Math.floor(duration / 3600);
@@ -227,18 +249,42 @@ const TimeTracking = () => {
         />
       </div>
 
+
+      <div className="flex gap-6">
+        <div className="mb-4">
+          <button
+            onClick={openManualEntryModal}
+            className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-1 px-4 rounded"
+          >
+            Manual Entry
+          </button>
+        </div>
+
+        <div className="mb-4">
+          <ProjectSettings
+            defaultProject={defaultProject}
+            setDefaultProject={setDefaultProject}
+          />
+        </div>
+
+        <div className="mb-4">
+          <BreakSettings
+            breakReminders={breakReminders}
+            toggleBreakReminders={toggleBreakReminders}
+          />
+        </div>
+      </div>
+
+
+
+
+
+
       <div className="mb-4">
         {getActionButton()}
       </div>
 
-      <div className="mb-4">
-        <button
-          onClick={openManualEntryModal}
-          className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
-        >
-          Manual Entry
-        </button>
-      </div>
+
 
       <div className="mb-4 font-bold text-3xl">
         <TimerDisplay timer={timer} />
@@ -279,128 +325,16 @@ const TimeTracking = () => {
       )}
 
       {manualEntryModal && (
-        <div
-          className="fixed z-10 inset-0 overflow-y-auto"
-          aria-labelledby="modal-title"
-          role="dialog"
-          aria-modal="true"
-        >
-          <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div className="fixed inset-0 transition-opacity">
-              <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
-            </div>
-
-            <span className="hidden sm:inline-block sm:align-middle sm:h-screen"></span>•
-
-            <div
-              className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
-              role="dialog"
-              aria-labelledby="modal-headline"
-            >
-              <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                <div className="sm:flex sm:items-start">
-                  <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                    <h3
-                      className="text-lg leading-6 font-medium text-gray-900"
-                      id="modal-headline"
-                    >
-                      Manual Entry
-                    </h3>
-                    <div className="mt-2">
-                      <label className="block text-gray-700 text-sm font-bold mb-2">
-                        Project Name
-                      </label>
-                      <input
-                        type="text"
-                        name="name"
-                        value={manualEntryData.name}
-                        onChange={handleManualEntryChange}
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2"
-                        placeholder="Enter project name"
-                        required
-                      />
-
-                      <label className="block text-gray-700 text-sm font-bold mb-2">
-                        Start Time
-                      </label>
-                      <input
-                        type="datetime-local"
-                        name="startTime"
-                        value={manualEntryData.startTime}
-                        onChange={handleManualEntryChange}
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2"
-                        required
-                      />
-
-                      <label className="block text-gray-700 text-sm font-bold mb-2">
-                        End Time
-                      </label>
-                      <input
-                        type="datetime-local"
-                        name="endTime"
-                        value={manualEntryData.endTime}
-                        onChange={handleManualEntryChange}
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2"
-                        required
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                <button
-                  onClick={submitManualEntry}
-                  type="button"
-                  className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-500 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm"
-                >
-                  Save
-                </button>
-                <button
-                  onClick={closeManualEntryModal}
-                  type="button"
-                  className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-                >
-                  Cancel
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <ManualEntryModal
+          modalData={manualEntryData}
+          handleChange={handleManualEntryChange}
+          handleSubmit={submitManualEntry}
+          closeModal={closeManualEntryModal}
+        />
       )}
 
       {breakModal && (
-        <div
-          className="fixed z-10 inset-0 overflow-y-auto"
-          aria-labelledby="modal-title"
-          role="dialog"
-          aria-modal="true"
-        >
-          <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div className="fixed inset-0 transition-opacity">
-              <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
-            </div>
-
-            <span className="hidden sm:inline-block sm:align-middle sm:h-screen"></span>•
-
-            <div
-              className="inline-block align-bottom bg-white rounded-lg text-center overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
-              role="dialog"
-              aria-labelledby="modal-headline"
-            >
-              <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                <h3 className="text-xl leading-6 font-medium text-gray-900 mb-4">
-                  Take a 30sec Break!
-                </h3>
-                <p className="text-gray-700 text-sm mb-4">
-                  Relax and come back recharged for your next session.
-                </p>
-                <div className="text-3xl font-bold mb-4">
-                  <TimerDisplay timer={timer} />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <BreakModal timer={timer} />
       )}
     </div>
   );

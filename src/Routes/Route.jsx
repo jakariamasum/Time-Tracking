@@ -40,7 +40,7 @@ export const router = createBrowserRouter([
             {
                 path: '/dashboard/project',
                 element: <ProjectProvider><Project/></ProjectProvider>
-            }
+            },
         ]
     }
 ]);
