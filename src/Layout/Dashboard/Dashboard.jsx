@@ -1,5 +1,5 @@
 import { Link, Outlet } from 'react-router-dom';
-import { FaClock, FaCalendar, FaChartBar, FaComments, FaBars } from 'react-icons/fa';
+import { FaClock, FaCalendar, FaChartBar, FaComments, FaBars, FaHome, FaUserMinus, FaMinus } from 'react-icons/fa';
 import { useState } from 'react';
 
 const Dashboard = () => {
@@ -43,6 +43,18 @@ const Dashboard = () => {
               Project Management
             </Link>
           </li>
+          <li className="mb-2">
+            <Link to="/" className="flex items-center" onClick={closeMobileMenu}>
+              <FaHome className="mr-2" />
+              Back to Home
+            </Link>
+          </li>
+          <li className="mb-2">
+            <Link to="/" className="flex items-center" onClick={closeMobileMenu}>
+              <FaUserMinus className="mr-2" />
+              Logout
+            </Link>
+          </li>
         </ul>
       </div>
 
@@ -72,6 +84,18 @@ const Dashboard = () => {
             <Link to="/dashboard/project" className="flex items-center">
               <FaComments className="mr-2" />
               Project Management
+            </Link>
+          </li>
+          <li className="mb-2">
+            <Link to="/" className="flex items-center">
+              <FaHome className="mr-2" />
+              Back to Home
+            </Link>
+          </li>
+          <li className="mb-2">
+            <Link to="/" className="flex items-center">
+              <FaMinus className="mr-2" />
+              Logout
             </Link>
           </li>
         </ul>
