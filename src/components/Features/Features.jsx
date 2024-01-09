@@ -1,13 +1,29 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import FeatureItem from './FeatureItem';
 import img from '../../assets/time.png';
 import img2 from '../../assets/report.png';
 import img3 from '../../assets/manage.png';
 
 const Features = () => {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { duration: 2 } },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: -20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 2.5, ease: 'easeInOut' } },
+  };
+
   return (
-    <div className='text-center mx-auto px-4 md:px-8 lg:px-32'>
-      <h1 className="mb-5 font-semibold text-[#3D4853] text-center text-2xl md:text-3xl">Time management features</h1>
+    <motion.div
+      className='text-center mx-auto px-4 md:px-8 lg:px-32'
+      variants={containerVariants}
+      initial='hidden'
+      animate='visible'
+    >
+      <h1 className='mb-5 font-semibold text-[#3D4853] text-center text-2xl md:text-3xl'>Time management features</h1>
       <p className='w-full md:w-[600px] mb-8 mx-auto text-[#5A6B7B] text-[14px] md:text-[18px]'>
         Track productivity, attendance, and billable hours with a simple time tracker and timesheet.
       </p>
@@ -16,7 +32,7 @@ const Features = () => {
         <h1 className='font-bold uppercase text-xl md:text-2xl text-left md:text-center text-[#FF7425] mb-4'>
           Timekeeping
         </h1>
-        <div className='flex flex-col md:flex-row gap-4 items-center'>
+        <motion.div className='flex flex-col md:flex-row gap-4 items-center' variants={itemVariants}>
           <div className=' text-left mx-auto'>
             <FeatureItem title={'Timer'} subtitle={'Track work hours in real time.'} />
             <FeatureItem title={'Timesheet'} subtitle={'Enter time in a weekly timesheet.'} />
@@ -25,14 +41,14 @@ const Features = () => {
             <FeatureItem title={'Kiosk'} subtitle={'Clock in from a shared device.'} />
           </div>
           <div className=' mx-auto'>
-            <img src={img} alt="image" className='w-full mx-auto' />
+            <motion.img src={img} alt='image' className='w-full mx-auto' variants={itemVariants} />
           </div>
-        </div>
+        </motion.div>
 
         <h1 className='text-[#FF7425] font-bold uppercase text-xl md:text-2xl text-center mb-4 lg:mt-24'>Reporting</h1>
-        <div className='flex flex-col md:flex-row gap-4 items-center'>
+        <motion.div className='flex flex-col md:flex-row gap-4 items-center' variants={itemVariants}>
           <div className='md:w-1/2 mx-auto'>
-            <img src={img2} alt="image" className='w-full mx-auto' />
+            <motion.img src={img2} alt='image' className='w-full mx-auto' variants={itemVariants} />
           </div>
           <div className='text-left mx-auto'>
             <FeatureItem title={'Reporting'} subtitle={'Analyze and export tracked time.'} />
@@ -41,10 +57,10 @@ const Features = () => {
             <FeatureItem title={'Projects'} subtitle={'Track project estimates and budget.'} />
             <FeatureItem title={'Location'} subtitle={'See visited sites and routes.'} />
           </div>
-        </div>
+        </motion.div>
 
         <h1 className='font-bold uppercase text-xl md:text-2xl text-center text-[#FF7425] mb-4 lg:mt-24'>Management</h1>
-        <div className='flex flex-col md:flex-row gap-4 items-center'>
+        <motion.div className='flex flex-col md:flex-row gap-4 items-center' variants={itemVariants}>
           <div className='text-left mx-auto'>
             <FeatureItem title={'Scheduling'} subtitle={'Schedule work, assignments, and shifts.'} />
             <FeatureItem title={'Time off'} subtitle={'Manage leaves and holidays.'} />
@@ -53,11 +69,11 @@ const Features = () => {
             <FeatureItem title={'Expenses'} subtitle={'Record project expenses and fees.'} />
           </div>
           <div className='md:w-1/2 mx-auto'>
-            <img src={img3} alt="image" className='w-full mx-auto' />
+            <motion.img src={img3} alt='image' className='w-full mx-auto' variants={itemVariants} />
           </div>
-        </div>
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

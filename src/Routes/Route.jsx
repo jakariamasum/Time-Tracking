@@ -10,12 +10,17 @@ import DashboardPage from "../Pages/DashboardPage/DashboardPage";
 import Project from "../Pages/Projects/Projects";
 import { ProjectProvider } from "../Pages/Projects/ProjectContext";
 import Calendar from "../Pages/Calendar/Calendar";
+import Main from "../Layout/Main/Main";
 
 export const router = createBrowserRouter([
     {
         path: "/",
-        element: <Home/>,
+        element: <Main/>,
         children:[
+            {
+                path:'/',
+                element: <Home/>
+            },
             {
                 path:'/login',
                 element: <Login/>
