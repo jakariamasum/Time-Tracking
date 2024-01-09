@@ -12,6 +12,7 @@ import { ProjectProvider } from "../Pages/Projects/ProjectContext";
 import Calendar from "../Pages/Calendar/Calendar";
 import Main from "../Layout/Main/Main";
 import Contact from "../Pages/Contact/Contact";
+import Features from "../components/Features/Features";
 
 export const router = createBrowserRouter([
     {
@@ -25,6 +26,10 @@ export const router = createBrowserRouter([
             {
                 path:'/contact',
                 element: <Contact/>
+            },
+            {
+                path: '/features',
+                element: <div className="md:my-28"><Features /></div>
             },
             {
                 path:'/login',
