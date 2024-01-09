@@ -50,7 +50,7 @@ const Navbar = () => {
 
                     {
                         user ? <>
-                            <Link to="/dashboard" className="hover:text-[#FF7425] ">
+                            <Link to="/dashboard/time-tracking" className="hover:text-[#FF7425] ">
                                 <span className="ml-1">Dashboard</span>
                             </Link>
 
@@ -90,7 +90,7 @@ const Navbar = () => {
                     </Link>
                     {
                         user ? <>
-                            <Link to="/dashboard" className="block text-white py-2" onClick={closeMenu}>
+                            <Link to="/dashboard/time-tracking" className="block text-white py-2" onClick={closeMenu}>
                                 Dashboard
                             </Link>
                             <Link to="/" onClick={handleLogOut} className="block text-white py-2">

@@ -1,9 +1,12 @@
 import { Link, Outlet } from 'react-router-dom';
 import { FaClock, FaCalendar, FaChartBar, FaComments, FaBars, FaHome, FaUserMinus, FaMinus } from 'react-icons/fa';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { AuthContext } from '../../Provider/Authprovider';
+import Swal from 'sweetalert2';
 
 const Dashboard = () => {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const {logOut}=useContext(AuthContext)
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!isMobileMenuOpen);
@@ -13,9 +16,21 @@ const Dashboard = () => {
     setMobileMenuOpen(false);
   };
 
+  const handleLogOut = () => {
+    logOut()
+        .then((res) => {
+            Swal.fire({
+                position: "center",
+                icon: "warning",
+                title: "See you later!!",
+                showConfirmButton: false,
+                timer: 1500,
+            });
+        })
+        .catch((error) => console.log(error.message));
+};
   return (
     <div className="flex flex-col md:flex-row h-screen bg-gray-100">
-      {/* Mobile Menu */}
       <div className={`md:hidden fixed top-0 left-0 right-0 bottom-0 bg-gray-800 text-white p-4 ${isMobileMenuOpen ? 'block' : 'hidden'}`}>
         <h2 className="text-2xl font-bold mb-4">Dashboard</h2>
         <ul>
@@ -50,7 +65,7 @@ const Dashboard = () => {
             </Link>
           </li>
           <li className="mb-2">
-            <Link to="/" className="flex items-center" onClick={closeMobileMenu}>
+            <Link to="/" onClick={handleLogOut} className="flex items-center">
               <FaUserMinus className="mr-2" />
               Logout
             </Link>
@@ -93,7 +108,7 @@ const Dashboard = () => {
             </Link>
           </li>
           <li className="mb-2">
-            <Link to="/" className="flex items-center">
+            <Link to="/" onClick={handleLogOut} className="flex items-center">
               <FaMinus className="mr-2" />
               Logout
             </Link>

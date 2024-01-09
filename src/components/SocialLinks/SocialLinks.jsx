@@ -20,7 +20,7 @@ const SocialLinks = () => {
                     showConfirmButton: false,
                     timer: 1500
                 });
-                navigate('/');
+                navigate('/dashboard/time-tracking');
             })
             .catch(error => {
                 console.log(error.message)
@@ -39,9 +39,7 @@ const SocialLinks = () => {
                 <div onClick={handleGoogleSignIn} className='flex gap-2 items-center border border-red-500 rounded-lg w-fit py-3 px-6 cursor-pointer text-red-500 hover:bg-[#FF7425] hover:text-white hover:border-none'>
                     <FaGoogle /> <span>Google</span>
                 </div>
-                <div className='flex gap-2 items-center border border-[black] rounded-lg w-fit py-3 px-6 cursor-pointer hover:bg-[#FF7425] hover:text-white text-[black] hover:border-none'>
-                    <FaGithub /> <span>Github</span>
-                </div>
+
             </div>
         </div>
     );

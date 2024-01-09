@@ -33,7 +33,7 @@ const Login = () => {
                     showConfirmButton: false,
                     timer: 1500
                 });
-                navigate('/dashboard');
+                navigate('/dashboard/time-tracking');
             })
             .catch(error => {
                 console.log(error.message)
