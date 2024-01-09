@@ -11,6 +11,7 @@ import Project from "../Pages/Projects/Projects";
 import { ProjectProvider } from "../Pages/Projects/ProjectContext";
 import Calendar from "../Pages/Calendar/Calendar";
 import Main from "../Layout/Main/Main";
+import Contact from "../Pages/Contact/Contact";
 
 export const router = createBrowserRouter([
     {
@@ -20,6 +21,10 @@ export const router = createBrowserRouter([
             {
                 path:'/',
                 element: <Home/>
+            },
+            {
+                path:'/contact',
+                element: <Contact/>
             },
             {
                 path:'/login',

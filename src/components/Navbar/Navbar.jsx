@@ -41,8 +41,11 @@ const Navbar = () => {
                         <span className="ml-1">Home</span>
                     </Link>
 
-                    <Link to="#" className="hover:text-[#FF7425]">
+                    <Link to="/features" className="hover:text-[#FF7425]">
                         <span className="ml-1">Features</span>
+                    </Link>
+                    <Link to="/contact" className="hover:text-[#FF7425]">
+                        <span className="ml-1">Contact</span>
                     </Link>
 
                     {
