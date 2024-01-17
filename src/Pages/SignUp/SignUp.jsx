@@ -14,10 +14,8 @@ const Register = () => {
         formState: { errors },
     } = useForm();
 
-    // const [err, setErr] = useState('');
     const navigate = useNavigate();
     const { createUser, logOut } = useContext(AuthContext);
-    // const [showPassword, setShowPassword] = useState(false);
 
     const onSubmit = (data) => {
         const name = data.name;
